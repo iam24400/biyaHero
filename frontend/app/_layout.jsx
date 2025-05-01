@@ -1,36 +1,43 @@
-import { Tabs } from "expo-router";
-import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import { Stack } from 'expo-router';
+import { View, Image, Text } from 'react-native';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+function RootLayoutNav() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+        <Image
+          source={require('../assets/images/LOGO.png')}
+          style={{ width: 200, height: 200 }}
+          resizeMode="contain"
+        />
+      </View>
+    );
+  }
+
+  // Always show auth screens first
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(auth)" />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   return (
-    <Tabs
-      screenOptions={({ route }) => ({
-        tabBarActiveTintColor: 'blue',
-        tabBarLabelStyle: { fontSize: 12 },
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-
-          if (route.name === 'index') {
-            iconName = 'home';
-          } else if (route.name === 'history') {
-            iconName = 'time';
-          } else if (route.name === 'profile') {
-            iconName = 'person';
-          } else if (route.name === 'route') {
-            iconName = 'navigate'; // 🧭 navigation icon
-          } else if (route.name === 'update') {
-            iconName = 'warning'; // ⚠️ warning icon
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-      })}
-    >
-      <Tabs.Screen name="index" options={{ title: "Home" }} />
-      <Tabs.Screen name="history" options={{ title: "History" }} />
-      <Tabs.Screen name="profile" options={{ title: "Profile" }} />
-      <Tabs.Screen name="route" options={{ title: "Route" }} />
-      <Tabs.Screen name="update" options={{ title: "Update" }} />
-    </Tabs>
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }
