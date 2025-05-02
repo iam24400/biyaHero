@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
 import { View } from 'react-native';
-import NotificationIcon from '../components/NotificationIcon';
+import NotificationIcon from '../../components/NotificationIcon';
 
 export default function TabsLayout() {
   return (
