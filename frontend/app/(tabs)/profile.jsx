@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity, Image, Modal, Switch } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, Image, Modal, Switch, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "../context/AuthContext";
 
@@ -8,16 +8,27 @@ export default function ProfilePage() {
   const [showDiscountModal, setShowDiscountModal] = useState(false);
   const [isEligibleForDiscount, setIsEligibleForDiscount] = useState(false);
   const [discountType, setDiscountType] = useState('');
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
   const router = useRouter();
   const { user, logout, updateUserProfile } = useAuth();
 
   const discountTypes = ["Student", "Senior Citizen", "PWD (Persons with Disabilities)"];
+
+  const AVATAR_CHOICES = [
+    "https://api.dicebear.com/6.x/fun-emoji/png?seed=Jeepney",
+    "https://api.dicebear.com/6.x/fun-emoji/png?seed=TrafficHero",
+    "https://api.dicebear.com/6.x/fun-emoji/png?seed=Commuter1",
+    "https://api.dicebear.com/6.x/fun-emoji/png?seed=TravelerPinoy",
+    "https://api.dicebear.com/6.x/fun-emoji/png?seed=BikerBoi",
+  ];
 
   // Initialize state from user data
   useState(() => {
     if (user) {
       setIsEligibleForDiscount(user.isDiscounted || false);
       setDiscountType(user.discountType || '');
+      setSelectedAvatar(user.avatar || AVATAR_CHOICES[0]); // Default to first avatar if no avatar
     }
   }, [user]);
 
@@ -61,16 +72,29 @@ export default function ProfilePage() {
     }
   };
 
+  const handleUpdateAvatar = async (avatarUrl) => {
+    try {
+      setSelectedAvatar(avatarUrl);
+      await updateUserProfile({ avatar: avatarUrl });
+      setShowAvatarModal(false);
+    } catch (error) {
+      console.error('Avatar update error:', error);
+      Alert.alert("Error", "Failed to update avatar. Please try again.");
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Profile Section */}
       <View style={styles.profileSection}>
-        <View style={styles.avatar}>
-          <Image
-            source={{ uri: "https://via.placeholder.com/100" }}
-            style={styles.avatarImage}
-          />
-        </View>
+        <TouchableOpacity onPress={() => setShowAvatarModal(true)}>
+          <View style={styles.avatar}>
+            <Image
+              source={{ uri: selectedAvatar }}
+              style={styles.avatarImage}
+            />
+          </View>
+        </TouchableOpacity>
         <Text style={styles.name}>{user?.name || 'Biya Hero'}</Text>
         <Text style={styles.email}>{user?.email || '@biyahero.gmail.com'}</Text>
         
@@ -173,6 +197,40 @@ export default function ProfilePage() {
                 onPress={() => setShowDiscountModal(false)}
               >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Avatar Selection Modal */}
+      <Modal
+        visible={showAvatarModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowAvatarModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Avatar</Text>
+            
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {AVATAR_CHOICES.map((avatarUrl, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleUpdateAvatar(avatarUrl)}
+                >
+                  <Image source={{ uri: avatarUrl }} style={styles.avatarChoice} />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.saveButton]}
+                onPress={() => setShowAvatarModal(false)}
+              >
+                <Text style={styles.saveButtonText}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -343,5 +401,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  avatarChoice: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginHorizontal: 10,
   },
 });
