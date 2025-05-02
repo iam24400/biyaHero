@@ -11,7 +11,7 @@ export default function ProfilePage() {
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const router = useRouter();
-  const { user, logout, updateUserProfile } = useAuth();
+  const { user, logout } = useAuth();
 
   const discountTypes = ["Student", "Senior Citizen", "PWD (Persons with Disabilities)"];
 
@@ -55,10 +55,10 @@ export default function ProfilePage() {
 
   const handleUpdateDiscount = async (newDiscountType = null) => {
     try {
-      await updateUserProfile({
-        isDiscounted: isEligibleForDiscount,
-        discountType: newDiscountType || discountType
-      });
+      // await updateUserProfile({
+      //   isDiscounted: isEligibleForDiscount,
+      //   discountType: newDiscountType || discountType
+      // });
       Alert.alert(
         "Success",
         "Discount status updated successfully"
@@ -75,7 +75,7 @@ export default function ProfilePage() {
   const handleUpdateAvatar = async (avatarUrl) => {
     try {
       setSelectedAvatar(avatarUrl);
-      await updateUserProfile({ avatar: avatarUrl });
+      // await updateUserProfile({ avatar: avatarUrl });
       setShowAvatarModal(false);
     } catch (error) {
       console.error('Avatar update error:', error);
