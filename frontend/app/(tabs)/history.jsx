@@ -135,12 +135,26 @@ export default function HistoryPage() {
       {getFilteredHistory().map((ride) => (
         <View key={ride.id} style={styles.card}>
           <Image source={{ uri: ride.image }} style={styles.image} resizeMode="cover" />
+          <TouchableOpacity 
+            style={styles.favoriteButton}
+            onPress={() => {
+              const isFavorite = favorites.some(fav => fav.id === ride.id);
+              if (isFavorite) {
+                setFavorites(favorites.filter(fav => fav.id !== ride.id));
+              } else {
+                addToFavorites(ride);
+              }
+            }}
+          >
+            <Ionicons 
+              name={favorites.some(fav => fav.id === ride.id) ? "star" : "star-outline"} 
+              size={24} 
+              color="#FFD700" 
+            />
+          </TouchableOpacity>
           <View style={styles.content}>
             <View style={styles.row}>
               <Text style={styles.routeName}>{ride.name}</Text>
-              <TouchableOpacity onPress={() => addToFavorites(ride)}>
-                <Text style={styles.favoriteIcon}>⭐</Text>
-              </TouchableOpacity>
             </View>
             <Text>{ride.time} {ride.date}</Text>
             <View style={styles.detailsRow}>
@@ -270,6 +284,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     overflow: "hidden",
+    position: 'relative',
   },
   image: {
     width: "100%",
@@ -287,9 +302,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
   },
-  favoriteIcon: {
-    fontSize: 22,
-    color: "#FFD700",
+  favoriteButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    padding: 5,
   },
   detailsRow: {
     flexDirection: "row",

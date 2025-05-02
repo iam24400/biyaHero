@@ -54,7 +54,7 @@ export default function Signup() {
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       <View style={styles.logoContainer}>
         <Image
-          source={require('../../assets/images/LOGO.png')}
+          source={require('../../assets/images/LOGO1.png')}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -220,18 +220,18 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 60,
+    marginTop: 30,
     marginBottom: 40,
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
   },
   title: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   subtitle: {
     fontSize: 16,
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     gap: 15,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   input: {
     borderWidth: 1,
@@ -264,13 +264,13 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -12 }],
   },
   discountContainer: {
-    marginTop: 10,
+    marginTop: 0,
   },
   discountToggleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 0,
   },
   discountLabel: {
     fontSize: 16,
@@ -278,21 +278,23 @@ const styles = StyleSheet.create({
   },
   discountTypeButton: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor:'#007AFF',
     padding: 15,
     borderRadius: 8,
     backgroundColor: '#f8f8f8',
+    alignItems: 'center'
   },
   discountTypeButtonText: {
     fontSize: 16,
-    color: '#333',
+    color: '#007AFF',
+    fontWeight: 'bold'
   },
   button: {
     backgroundColor: '#007AFF',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 5,
   },
   buttonDisabled: {
     backgroundColor: '#ccc',
@@ -368,14 +370,16 @@ const styles = StyleSheet.create({
   modalCloseButton: {
     marginTop: 10,
     padding: 15,
+    borderColor: '#007AFF',
     width: '100%',
     borderRadius: 8,
-    backgroundColor: '#f0f0f0',
+    borderWidth: 1
+    
   },
   modalCloseButtonText: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#666',
+    color: '#007AFF',
     fontWeight: 'bold',
   },
 }); 

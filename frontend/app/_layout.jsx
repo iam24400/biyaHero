@@ -18,7 +18,7 @@ function RootLayoutNav() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
         <Image
-          source={require('../assets/images/LOGO.png')}
+          source={require('../assets/images/LOGO1.png')}
           style={{ width: 200, height: 200 }}
           resizeMode="contain"
         />

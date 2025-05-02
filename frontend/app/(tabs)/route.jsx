@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as Location from 'expo-location';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -33,6 +35,7 @@ export default function RoutePage() {
   });
   const [calculatedDistance, setCalculatedDistance] = useState(null);
   const [showInstructions, setShowInstructions] = useState(false);
+  const router = useRouter();
 
   const alangilanStops = [
     { name: 'Terminal', time: '9:51' },
@@ -306,6 +309,16 @@ export default function RoutePage() {
               </Text>
             </TouchableOpacity>
           </View>
+
+          {origin && destination && (
+            <TouchableOpacity 
+              style={styles.startRouteButton}
+              onPress={() => router.push('/update')}
+            >
+              <Ionicons name="navigate" size={24} color="white" />
+              <Text style={styles.startRouteText}>Start Route</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
@@ -754,5 +767,20 @@ const styles = StyleSheet.create({
   suggestionText: {
     fontSize: 14,
     color: '#333',
+  },
+  startRouteButton: {
+    flexDirection: 'row',
+    backgroundColor: '#28a745',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  startRouteText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
   },
 });

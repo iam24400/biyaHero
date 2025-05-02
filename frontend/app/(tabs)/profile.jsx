@@ -97,6 +97,9 @@ export default function ProfilePage() {
         </TouchableOpacity>
         <Text style={styles.name}>{user?.name || 'Biya Hero'}</Text>
         <Text style={styles.email}>{user?.email || '@biyahero.gmail.com'}</Text>
+        <Text style={styles.memberSince}>
+          Member since {user?.createdAt ? new Date(user.createdAt).getFullYear() : '2024'}
+        </Text>
         
         {/* Discount Status */}
         <TouchableOpacity 
@@ -259,6 +262,7 @@ const styles = StyleSheet.create({
   },
   name: { fontSize: 20, fontWeight: "bold", marginBottom: 5 },
   email: { fontSize: 14, color: "gray" },
+  memberSince: { fontSize: 12, color: "gray", marginBottom: 10 },
   divider: {
     height: 1,
     backgroundColor: "#ccc",

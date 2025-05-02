@@ -1,20 +1,10 @@
 import jwt from "jsonwebtoken";
 import queriesBD from "../database/queriesDB.js"
 
-
-// const response = await fetch(`http://localhost:3000/api/books`, {
-//   method: "POST",
-//   body: JSON.stringify({
-//     title,
-//     caption
-//   }),
-//   headers: { Authorization: `Bearer ${token}` },
-// });
-
 const protectRoute = async (req, res, next) => {
   try {
-    // // get the token
-    // const token = req.header("Authorization").replace("Bearer ", "");
+    // get the token from client's request
+    const token = req.header("Auth_Token");
     if (!token) return res.status(401).json({ message: "No authentication token, access denied" });
 
     // verify the token

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, Text, Button, ScrollView, Image, StyleSheet, Modal, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import LOGO from '../../assets/images/LOGO.png'; // Fixed path
+import LOGO from '../../assets/images/LOGO1.png'; // Updated path
 
 export default function HomePage() {
   const [modalVisible, setModalVisible] = useState(false);

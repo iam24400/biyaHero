@@ -1,13 +1,9 @@
-import{Client} from "pg";
+import {Pool} from "pg";
 
-const client = new Client({
-    host: "localhost",
-    user: "postgres",
-    port: "5432",
-    password: "12345",
-    database: "biyaheroDB"
+const client = new Pool({
+  connectionString: process.env.DATABASE_URL
 });
 
-client.connect().then(() => console.log("connected to the database"));
+console.log("connected to database")
 
 export default client;

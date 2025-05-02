@@ -1,5 +1,7 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
+import { View } from 'react-native';
+import NotificationIcon from '../components/NotificationIcon';
 
 export default function TabsLayout() {
   return (
@@ -24,6 +26,11 @@ export default function TabsLayout() {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        headerRight: () => (
+          <View style={{ marginRight: 15 }}>
+            <NotificationIcon />
+          </View>
+        ),
       })}
     >
       <Tabs.Screen name="index" options={{ title: "Home" }} />

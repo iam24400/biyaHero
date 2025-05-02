@@ -37,7 +37,7 @@ export default function Login() {
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       <View style={styles.logoContainer}>
         <Image
-          source={require('../../assets/images/LOGO.png')}
+          source={require('../../assets/images/LOGO1.png')}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -116,15 +116,15 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 60,
+    marginTop: 30,
     marginBottom: 40,
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
   },
   title: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 5,
   },
   buttonDisabled: {
     backgroundColor: '#ccc',

@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
         email,
         name: email.split('@')[0], // Using email prefix as name
         isDiscounted,
+        createdAt: new Date().toISOString(), // Add creation timestamp
       };
 
       // Save user to AsyncStorage
@@ -76,6 +77,7 @@ export const AuthProvider = ({ children }) => {
         email: users[email].email,
         name: users[email].name,
         isDiscounted: users[email].isDiscounted,
+        createdAt: users[email].createdAt, // Include creation date in user data
       };
 
       await AsyncStorage.setItem('userData', JSON.stringify(userData));
