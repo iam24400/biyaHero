@@ -3,102 +3,103 @@ import client from "./postgreDB.js"
 
 const queriesDB = {
 
-    // // retrieve all history of a specific user_id only
-    // async viewingHistory (req, res, next) {
-    //     const id = req.params.user_id;
-    //     const query = `SELECT * FROM public."history" WHERE user_id = $1`;
-    //     await client.query( query, [id], (err, result) => {
-    //         if (!err) {
-    //             console.log(result.rows);
-    //             res.send(result.rows);
-    //         } else {
-    //             console.log(err.message);
-    //         }   
-    //     });
-    // },
-
-    // // retrieve all favorites rides from history
-    // async viewingFavorites (req, res, next) {
-    //     const id = req.params.user_id;
-    //     const isfav = true;
-    //     const query = `SELECT * FROM public."history" WHERE user_id = $1 AND "isFavorite" = $2`;
-    //     await client.query( query, [id, isfav], (err, result) => {
-    //         if (!err) {
-    //             console.log(result.rows);
-    //             res.send(result.rows);
-    //         } else {
-    //             console.log(err.message);
-    //         }
-    //     });
-    // },
-
-    
-
     // check existing email
     async checkExistingEmail (email) {
-        const query = `SELECT email FROM public."user" WHERE email = $1`;
-        await client.query( query, [email], (err, result) => {
-            if (!err) {
-                console.log(result.rows[0]['email']);
-                return result.rows[0]['email'];
-            } else {
-                console.log(err.message);
-            }
-        });
+        try {
+            const query = `SELECT email FROM public."user" WHERE email = $1`;
+            const result = await client.query( query, [email]);
+            console.log(result.rows[0]['email']);
+            return result.rows[0]['email'];
+        } catch (err) {
+            console.error('Error:', err.message);
+            throw err;
+        }
     },
 
     // adding user to DB
     async addUser (email, password, passengerType) {
-        const query = `INSERT INTO public."user"(email, password, "passengerType") VALUES ($1, $2, $3);`;
-        await client.query( query, [email, password, passengerType], (err, result) => {
-            if (!err) {
-                console.log(result.rows);
-            } else {
-                console.log(err.message);
-            }
-        });
+        try {
+            const query = `INSERT INTO public."user"(email, password, "passengerType") VALUES ($1, $2, $3);`;
+            const result = await client.query( query, [email, password, passengerType]);
+            console.log(result.rows);
+            return result.rows;
+        } catch (err) {
+            console.error('Error:', err.message);
+            throw err;
+        }
     },
 
     // retrieve password
     async retrievePassword (email) {
-        const query = `SELECT password FROM public."user" WHERE email = $1`;
-        await client.query( query, [email], (err, result) => {
-            if (!err) {
-                console.log(result.rows[0]['password']);
-                return result.rows[0]['password'];
-            } else {
-                console.log(err.message);
-            }
-        });
+        try {
+            const query = `SELECT password FROM public."user" WHERE email = $1`;
+            const result = await client.query( query, [email]);
+            console.log(result.rows[0]['password']);
+            return result.rows[0]['password'];
+        } catch (err) {
+            console.error('Error:', err.message);
+            throw err;
+        }
     },
 
     // retrieve passengerType, timeStamp
     async retrievePassTypeAndTime (email) {
-        const query = `SELECT "passengerType", "timeStamp"::date FROM public."user" WHERE email = $1`;
-        await client.query( query, [email], (err, result) => {
-            if (!err) {
-                console.log(result.rows[0]);
-                return result.rows[0];
-            } else {
-                console.log(err.message);
-            }
-        });
+        try {
+            const query = `SELECT "passengerType", "timeStamp"::date FROM public."user" WHERE email = $1`;
+            const result = await client.query( query, [email]);
+            console.log(result.rows[0]);
+            return result.rows[0];
+        } catch (err) {
+            console.error('Error:', err.message);
+            throw err;
+        }
     },
 
-    // // mark ride history as favorite
-    // async markingAsFavorite (req, res, next) {
-    //     const id = ;
-    //     const isfav = true;
-    //     const query = `UPDATE public.history SET "isFavorite" = $1 WHERE id = $2`;
-    //     await client.query( query, [id, isfav], (err, result) => {
-    //         if (!err) {
-    //             console.log(result.rows);
-    //             res.send(result.rows);
-    //         } else {
-    //             console.log(err.message);
-    //         }
-    //     });
-    // }
+    
+
+    // Function to find nearest point on a route
+    async findNearestPoint (lat, lng, routeId) {
+        try {
+            const query = `
+            SELECT id, latitude, longitude, sequence FROM route_point
+            WHERE jeepney_route_id = $1
+            ORDER BY (latitude - $2) * (latitude - $2) + (longitude - $3) * (longitude - $3)
+            LIMIT 1`;
+            const result = await client.query(query, [routeId, lat, lng])
+            return result.rows[0];
+        } catch (err) {
+            console.error('Error:', err.message);
+            throw err;
+        }
+
+    },
+
+    // Function to get all points for a route
+    async getRoutePoints (routeId) {
+        try {
+            const query = `SELECT latitude, longitude, sequence FROM route_point WHERE jeepney_route_id = $1 ORDER BY sequence`;
+            const result = await client.query(query, [routeId]);
+            return result.rows;
+        } catch (err) {
+            console.error('Error:', err.message);
+            throw err;
+        }
+    },
+
+    // Get all available routes
+    async jeepney_routes () {
+        try {
+            const query = 'SELECT id, name, color FROM jeepney_route';
+            const result = await client.query(query);
+            return result.rows;
+        } catch (err) {
+            console.error('Error:', err.message);
+            throw err;
+        }
+    }
+      
+
+    
 
 
 

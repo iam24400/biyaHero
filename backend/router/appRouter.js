@@ -1,10 +1,10 @@
 import express from "express";
-import { viewHistory } from "../services/history.js"
+import routeService from "../services/routeService.js";
 
 const router = express.Router();
 
 
-// router.get(', viewHistory);
+router.get('/jeepneyRoutes', routeService);
 
 
 export default router;
